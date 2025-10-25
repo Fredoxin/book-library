@@ -8,7 +8,7 @@ export class Book {
     #pages;
     #donereading;
 
-    constructor (title, cover,  author = "Not set", category = undefined, pages = undefined, publisher = undefined, doneReading = false) {
+    constructor (title, cover = undefined,  author = "Not set", category = undefined, pages = undefined, publisher = undefined, doneReading = false) {
         this.#id++
         this.#title = title;
         this.cover = cover; // src path
