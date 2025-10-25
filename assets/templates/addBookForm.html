@@ -1,0 +1,27 @@
+    <div class="bookFormContainer">
+        <h2>New Book</h2>
+        <form>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" placeholder="Enter book title" required>
+
+            <label for="cover">Cover (Image URL):</label>
+            <input type="url" id="cover" name="cover" placeholder="Enter image URL">
+
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" placeholder="Enter author name" value="Not set">
+
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" placeholder="Enter category">
+
+            <label for="pages">Pages:</label>
+            <input type="number" id="pages" name="pages" placeholder="Enter number of pages" min="1">
+
+            <label for="publisher">Publisher:</label>
+            <input type="text" id="publisher" name="publisher" placeholder="Enter publisher name">
+
+            <label for="doneReading">Done Reading:</label>
+            <input type="checkbox" id="doneReading" name="doneReading">
+
+            <button type="submit" id="handleBookSubmit" class="addBookFormButton">Add Book</button>
+        </form>
+    </div>

@@ -1,6 +1,4 @@
-import { Library } from "./services/Library.js";
-
-class LibraryView {
+export class LibraryView {
 
     constructor (library) {
         
@@ -10,13 +8,11 @@ class LibraryView {
     }
 
     renderBooks () {
-        let books;
-        let bookListElement;
+        // get books
+        const books = this.library.books;
+        const bookListElement = document.querySelector(".book-list");
        
         try {
-            // get books
-            books = this.library.books;
-            bookListElement = document.querySelector(".book-list");
             // check if there is a booklistElement  
             if (!bookListElement) { throw new Error ("No bookListElement found in DOM");}
              // check if library is empty
@@ -50,6 +46,34 @@ class LibraryView {
         bookElement.append(cover);
         bookListElement.append(bookElement);
         })
+    }
+
+  async initLibraryView () {
+        const path = "../../templates/libraryView.html";
+        const response = await fetch(path);
+        if (!response.ok) {throw new Error ("Template not found");}
+        const libraryViewHtml = response.text();
+        this.insertTemplateToDOM(libraryViewHtml);
+    }
+
+
+    insertTemplateToDOM (html) {
+    if (!html) {
+        throw new Error("No template found");
+    }
+
+    const app = document.querySelector(".app");
+    if (!app) {
+        throw new Error("Target container not found");
+    }
+
+    // Neues Template-Tag erstellen
+    const templateTag = document.createElement("template");
+    templateTag.innerHTML = html;
+
+    // Zielcontainer bereinigen und Template-Inhalt einfügen
+    app.innerHTML = ""; // Vorherigen Inhalt löschen
+    app.append(templateTag.content.cloneNode(true));
     }
 
 }
