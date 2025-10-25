@@ -33,7 +33,7 @@ export class Book {
     this.#author = author;
     }
 
-    get autho () {
+    get author () {
         return this.#author;
     }
 }

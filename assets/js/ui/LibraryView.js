@@ -9,9 +9,6 @@ class LibraryView {
         
     }
 
-    get bookListElement () {return document.querySelector(".book-list");}
-
-
     renderBooks () {
         let books;
         let bookListElement;
@@ -19,7 +16,7 @@ class LibraryView {
         try {
             // get books
             books = this.library.books;
-            bookListElement = this.bookListElement;
+            bookListElement = document.querySelector(".book-list");
             // check if there is a booklistElement  
             if (!bookListElement) { throw new Error ("No bookListElement found in DOM");}
              // check if library is empty
