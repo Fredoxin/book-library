@@ -1,10 +1,21 @@
 export class Book {
-    #title
-    #author
+    #id = 0;
+    #title;
+    #cover;
+    #category;
+    #author;
+    #publisher;
+    #pages;
+    #donereading;
 
-    constructor (title, author = "Not set", doneReading = false) {
+    constructor (title, cover,  author = "Not set", category = undefined, pages = undefined, publisher = undefined, doneReading = false) {
+        this.#id++
         this.#title = title;
+        this.cover = cover; // src path
+        this.category = category;
         this.#author = author;
+        this.publisher = publisher;
+        this.pages = pages;
         this.doneReading = doneReading;
     }
 
