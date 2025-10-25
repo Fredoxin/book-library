@@ -6,7 +6,7 @@ import { BookFormView } from "./ui/BookFormView.js"
 
 const library = new Library;
 const libraryView = new LibraryView(library);
-const bookFormView = new BookFormView("addBookForm.html");
+const bookFormView = new BookFormView("addBookForm.html", library, libraryView);
  
 // Buttons
 const addButton = document.querySelector(".button--add");

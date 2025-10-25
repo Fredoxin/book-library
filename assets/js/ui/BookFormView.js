@@ -1,6 +1,8 @@
 export class BookFormView {
 
-    constructor (templateName) {
+    constructor (templateName, library, libraryView) {
+        this.library =  library;
+        this.libraryView =  libraryView
         this.templateName = templateName;
         this.path = `./assets/templates/${templateName}`;
     }
@@ -10,25 +12,30 @@ export class BookFormView {
             // Fetch template and inser to DOM
             const response = await fetch(this.path);
             if(!response.ok) {throw new Error ("Template not found")}
-            const templateHTML = response.text();
+            const templateHTML = await response.text();
             this.insertTemplateToDOM(templateHTML);
 
             // Add eventlisteners
-            const addBookFormButton = document.querySelector(".addBookFormButton");
-            addBookFormButton.addEventListener("submit", (event) => {
-                this.Library.handleBookSubmit(event)
-                this.LibraryView.initLibraryView();
-                this.LibraryView.renderBooks();
-            })
+            const addBookForm = document.querySelector(".addBookForm");
+            if (!addBookForm) {
+                throw new Error("Element '.addBookFormButton' not found in the DOM");
+                }
+            addBookForm.addEventListener("submit", async (event) => { // wie warum genau async arrow
+                event.preventDefault();
+                this.library.handleBookSubmit(event);
+                await this.libraryView.initLibraryView();
+                this.libraryView.renderBooks();
+                })
 
 
         } catch (error) {
+                console.error(error.stack);
                 const errorMessageElement = document.querySelector(".errorMessage");
                 if (errorMessageElement)
                     errorMessageElement.textContent = `${error.message}`;
                 else {
                     console.error(error.message);
-                }
+                }l
             
         }
         return; // If error, abort.  

@@ -1,22 +1,24 @@
 export class Book {
-    #id = 0;
+    static idCounter = 0; // Statische Eigenschaft für IDs
+    #id;
     #title;
     #cover;
     #category;
     #author;
     #publisher;
     #pages;
-    #donereading;
+    #doneReading;
 
-    constructor (title, cover = undefined,  author = "Not set", category = undefined, pages = undefined, publisher = undefined, doneReading = false) {
-        this.#id++
+    constructor (title, cover = undefined,  author = undefined, category = undefined, pages = undefined, publisher = undefined, doneReading = false) {
+        console.log("Book constructor called with:", { title, cover, author, category, pages, publisher, doneReading });
+        this.#id = ++Book.idCounter;
         this.#title = title;
-        this.cover = cover; // src path
-        this.category = category;
+        this.#cover = cover; // src path
+        this.#category = category;
         this.#author = author;
-        this.publisher = publisher;
-        this.pages = pages;
-        this.doneReading = doneReading;
+        this.#publisher = publisher;
+        this.#pages = pages;
+        this.#doneReading = doneReading;
     }
 
     set title (title) {

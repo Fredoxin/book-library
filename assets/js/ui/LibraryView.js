@@ -24,6 +24,7 @@ export class LibraryView {
             bookListElement.innerHTML = "";    
 
             } catch (error) {
+                console.error(error.stack);
                 const errorMessageElement = document.querySelector(".errorMessage");
                 if (errorMessageElement)
                     errorMessageElement.textContent = `${error.message}`;
@@ -40,7 +41,7 @@ export class LibraryView {
         const bookElement = document.createElement("div");
         const cover = document.createElement("img");
         cover.src = `${book.cover}`;
-        cover.alt = book.author === undefined ? `${book.title}` : `${book.title} by ${book.author}`;
+        cover.alt = book.author === "" ? `${book.title}` : `${book.title} by ${book.author}`;
             
         //insert cover into bookElement and book into bookListElement
         bookElement.append(cover);
@@ -49,10 +50,10 @@ export class LibraryView {
     }
 
   async initLibraryView () {
-        const path = "../../templates/libraryView.html";
+        const path = "./assets/templates/libraryView.html";
         const response = await fetch(path);
         if (!response.ok) {throw new Error ("Template not found");}
-        const libraryViewHtml = response.text();
+        const libraryViewHtml = await response.text();
         this.insertTemplateToDOM(libraryViewHtml);
     }
 
