@@ -11,18 +11,25 @@ export class BookFormView {
         try {
             // Fetch template and inser to DOM
             const response = await fetch(this.path);
-            if(!response.ok) {throw new Error ("Template not found")}
+            if (!response.ok) {
+                console.error("Failed to fetch template:", this.path, "status:", response.status);
+                throw new Error("Template not found: " + this.path);
+            }
             const templateHTML = await response.text();
             this.insertTemplateToDOM(templateHTML);
 
             // Add eventlisteners
             const addBookForm = document.querySelector(".addBookForm");
             if (!addBookForm) {
-                throw new Error("Element '.addBookFormButton' not found in the DOM");
+                throw new Error("Element '.addBookForm' not found in the DOM");
                 }
             addBookForm.addEventListener("submit", async (event) => { // wie warum genau async arrow
                 event.preventDefault();
-                this.library.handleBookSubmit(event);
+                const newBook = await this.library.handleBookSubmit(event);
+                
+                //TODO UI FEEDBACK
+                console.log("Added book:", newBook.title, "id:", newBook.id);
+                
                 await this.libraryView.initLibraryView();
                 this.libraryView.renderBooks();
                 })
@@ -35,13 +42,11 @@ export class BookFormView {
                     errorMessageElement.textContent = `${error.message}`;
                 else {
                     console.error(error.message);
-                }l
-            
+                }        
         }
-        return; // If error, abort.  
-
-    }
+ }
     //für Library.js
+
 
 
 

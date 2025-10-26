@@ -51,10 +51,21 @@ export class LibraryView {
 
   async initLibraryView () {
         const path = "./assets/templates/libraryView.html";
+        
+     try {   
         const response = await fetch(path);
         if (!response.ok) {throw new Error ("Template not found");}
         const libraryViewHtml = await response.text();
         this.insertTemplateToDOM(libraryViewHtml);
+        } catch (error) {
+            console.error(error.stack);
+            const errorMessageElement = document.querySelector(".errorMessage");
+            if (errorMessageElement)
+                errorMessageElement.textContent = `${error.message}`;
+            else {
+                console.error(error.message);
+            }   
+        }
     }
 
 

@@ -4,15 +4,22 @@ export class Library {
     #books = [];
    
     
-    handleBookSubmit (event) {
-    const form = event.target; // Das Formular-Element
-    const formData = new FormData(form); // FormData-Objekt erstellen
+    async handleBookSubmit (event) {
+        try{
+            const form = event.target; // Das Formular-Element
+            const formData = new FormData(form); // FormData-Objekt erstellen
 
-    const bookData = Object.fromEntries(formData.entries());        
+            const bookData = Object.fromEntries(formData.entries());        
 
-    const newBook = new Book(bookData.title, bookData.cover, bookData.category, bookData.author, bookData.publisher, bookData.pages, bookData.doneReading, )
-    console.log("newbook")
-    this.addBook(newBook);
+            const newBook =  new Book(bookData.title, bookData.cover, bookData.author, bookData.category, bookData.publisher, bookData.pages, bookData.doneReading, )
+            console.log("newbook", newBook)
+            this.addBook(newBook);
+            return newBook
+
+        } catch (error) {
+            console.error("handleBookSubmit error:", error);
+            throw error;
+        }
     }
 
 

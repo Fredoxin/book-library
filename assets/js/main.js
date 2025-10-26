@@ -1,10 +1,8 @@
 import { Library } from "./services/Library.js";
-import { Book } from "./models/Book.js";
-import { LibraryView } from "./ui/LibraryView.js"
-import { BookFormView } from "./ui/BookFormView.js"
+import { LibraryView } from "./ui/LibraryView.js";
+import { BookFormView } from "./ui/BookFormView.js";
 
-
-const library = new Library;
+const library = new Library();
 const libraryView = new LibraryView(library);
 const bookFormView = new BookFormView("addBookForm.html", library, libraryView);
  
