@@ -1,0 +1,179 @@
+/*
+	Basic responsive styles for the Book Library app.
+	- No hard-coded widths for the main content (use max-width and responsive grid)
+	- Lightweight, readable structure with comments that show nesting intent
+	- Works well on mobile-first and scales up for larger screens
+*/
+
+:root {
+	--bg: #ffffff;
+	--surface: #1d1db7;
+	--muted: #6b7280;
+	--accent: #2563eb; /* blue-600 */
+	--danger: #dc2626;
+	--radius: 8px;
+	--gap: 0.75rem;
+	--max-width: 1100px;
+	--page-padding: 1rem;
+}
+
+/* Global reset / basics */
+* { box-sizing: border-box; }
+html,body { height: 100%; }
+body {
+	margin: 0;
+	font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	background: var(--bg);
+	color: #111827;
+	line-height: 1.4;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Header / nav */
+header {
+	background: var(--surface);
+	border-bottom: 1px solid rgba(15,23,42,0.04);
+}
+header nav {
+	display: flex;
+	gap: var(--gap);
+	align-items: center;
+	padding: 0.75rem var(--page-padding);
+	max-width: var(--max-width);
+	margin: 0 auto;
+}
+
+/* Buttons */
+.button {
+	appearance: none;
+	border: 1px solid rgba(15,23,42,0.06);
+	background: white;
+	color: #111827;
+	padding: 0.5rem 0.75rem;
+	border-radius: 6px;
+	cursor: pointer;
+	font-weight: 600;
+}
+.button--add { background: linear-gradient(180deg,#ffffff,#f8fafc); }
+.button--delete { color: var(--danger); border-color: rgba(220,38,38,0.12); }
+
+.errorMessage {
+	color: var(--danger);
+	font-size: 0.9rem;
+	margin-left: auto;
+}
+
+/* Main app container */
+.app {
+	max-width: var(--max-width);
+	margin: 1rem auto;
+	padding: 0 var(--page-padding);
+}
+
+/* Library view and book list (mobile-first) */
+.libraryView {
+	width: 100%;
+}
+.book-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: 0.75rem;
+	align-items: start;
+}
+
+/* Book card (nested intent: .book -> .cover, .meta) */
+.book {
+	background: var(--surface);
+    background-color: #2563eb;
+	border-radius: var(--radius);
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-height: 10rem;
+    min-width: 5rem;
+    border: 1px;
+}
+.book img {
+	width: 100%;
+	height: 180px;
+	object-fit: cover;
+	border-radius: 6px;
+	display: block;
+}
+.book-cover--placeholder {
+	width: 100%;
+	height: 180px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(180deg,#eef2ff, #f8fafc);
+	color: var(--muted);
+	border-radius: 6px;
+	font-weight: 700;
+}
+.book .title {
+	font-size: 0.95rem;
+	font-weight: 700;
+	margin: 0;
+}
+.book .author {
+	font-size: 0.85rem;
+	color: var(--muted);
+}
+
+/* Form styles: .addBookForm (nested intent: form -> .row -> label + input) */
+.addBookForm {
+	display: grid;
+	gap: 0.5rem;
+	background: var(--surface);
+	padding: 0.75rem;
+	border-radius: var(--radius);
+}
+.addBookForm .row {
+	display: flex;
+	flex-direction: column;
+}
+.addBookForm label {
+	font-size: 0.85rem;
+	color: var(--muted);
+	margin-bottom: 0.25rem;
+}
+.addBookForm input,
+.addBookForm textarea,
+.addBookForm select {
+	padding: 0.5rem;
+	border-radius: 6px;
+	border: 1px solid rgba(15,23,42,0.06);
+	font-size: 0.95rem;
+}
+.addBookForm textarea { min-height: 90px; }
+
+.form-actions {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: flex-end;
+}
+
+/* Footer */
+footer {
+	padding: 1rem var(--page-padding);
+	text-align: center;
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
+/* Larger screens adjustments */
+@media (min-width: 768px) {
+	header nav { padding: 1rem; }
+	.app { padding: 0 1.25rem; }
+	.book img, .book-cover--placeholder { height: 200px; }
+}
+
+@media (min-width: 1100px) {
+	.book-list { gap: 1rem; }
+}
+
+/* small utilities */
+.hidden { display: none !important; }
+

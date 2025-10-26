@@ -1,18 +1,17 @@
+import { insertTemplateToDOM } from "../util/ui-uitil.js";
+
 export class LibraryView {
 
-    constructor (library) {
-        
+    constructor (library) { 
         if (!library) {throw new Error ("Library required");}
-        this.library = library;
-        
+        this.library = library;     
     }
 
     renderBooks () {
-        // get books
-        const books = this.library.books;
-        const bookListElement = document.querySelector(".book-list");
-       
         try {
+             // get books
+            const books = this.library.books;
+            const bookListElement = document.querySelector(".book-list");
             // check if there is a booklistElement  
             if (!bookListElement) { throw new Error ("No bookListElement found in DOM");}
              // check if library is empty
@@ -20,8 +19,26 @@ export class LibraryView {
                 bookListElement.textContent = "Keine Bücher vorhanden.";
                 return;
                 }       
-            // Empty booklistElment
-            bookListElement.innerHTML = "";    
+            
+            bookListElement.innerHTML = "";
+            books.forEach(book => {
+            const bookElement = document.createElement("div");
+            bookElement.className = "book";
+            const cover = document.createElement("img");
+            
+            //Set src only if there is a cover to not display broken image symbol
+            if (book.cover) {
+                cover.src = book.cover;
+            } else {
+                cover.removeAttribute("src");
+            }
+
+            cover.alt = book.author === "" ? book.title : `${book.title} by ${book.author}`;
+                
+            //insert cover into bookElement and book into bookListElement
+            bookElement.append(cover);
+            bookListElement.append(bookElement);
+            })
 
             } catch (error) {
                 console.error(error.stack);
@@ -30,23 +47,8 @@ export class LibraryView {
                     errorMessageElement.textContent = `${error.message}`;
                 else {
                     console.error(error.message);
-                }
-            return; // If error, abort.        
+                }        
         }
-
-        // If there is no errors
-        // iterate over books
-        books.forEach(book => {
-        //create book element and cover. 
-        const bookElement = document.createElement("div");
-        const cover = document.createElement("img");
-        cover.src = `${book.cover}`;
-        cover.alt = book.author === "" ? `${book.title}` : `${book.title} by ${book.author}`;
-            
-        //insert cover into bookElement and book into bookListElement
-        bookElement.append(cover);
-        bookListElement.append(bookElement);
-        })
     }
 
   async initLibraryView () {
@@ -56,36 +58,16 @@ export class LibraryView {
         const response = await fetch(path);
         if (!response.ok) {throw new Error ("Template not found");}
         const libraryViewHtml = await response.text();
-        this.insertTemplateToDOM(libraryViewHtml);
+        insertTemplateToDOM(libraryViewHtml);
         } catch (error) {
             console.error(error.stack);
             const errorMessageElement = document.querySelector(".errorMessage");
             if (errorMessageElement)
-                errorMessageElement.textContent = `${error.message}`;
+                {errorMessageElement.textContent = error.message;}
             else {
                 console.error(error.message);
-            }   
+            }
+        throw error;       
         }
     }
-
-
-    insertTemplateToDOM (html) {
-    if (!html) {
-        throw new Error("No template found");
-    }
-
-    const app = document.querySelector(".app");
-    if (!app) {
-        throw new Error("Target container not found");
-    }
-
-    // Neues Template-Tag erstellen
-    const templateTag = document.createElement("template");
-    templateTag.innerHTML = html;
-
-    // Zielcontainer bereinigen und Template-Inhalt einfügen
-    app.innerHTML = ""; // Vorherigen Inhalt löschen
-    app.append(templateTag.content.cloneNode(true));
-    }
-
 }

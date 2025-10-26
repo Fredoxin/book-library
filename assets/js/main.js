@@ -12,13 +12,13 @@ const deleteButton = document.querySelector(".button--delete");
 
 //Event Listener
 // TODO: Show Add Book Form
-addButton.addEventListener("click", () => bookFormView.showBookForm());
+addButton.addEventListener("click", () => bookFormView.initBookFormView());
 
 // Show delete or delete checked Books
 //deleteButton.addEventListener("click", handleDelete);
     
     
 
-window.addEventListener("load", () => {
+window.addEventListener("DOMContentlLoaded", () => {
     libraryView.renderBooks();
 }); 
