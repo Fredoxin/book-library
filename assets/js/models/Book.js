@@ -31,12 +31,58 @@ export class Book {
         return this.#title;
     }
 
+    set cover (url) {
+        try {
+            src = new URL(url);
+            this.#cover = url;
+        } catch (error) {
+             console.error("Set cover error:", error);
+        }
+    }
+
+    get cover () {
+        return this.#cover
+    }
+
     set author (author) {
-    if (!author){throw new Error ("Empty author not allowed in this operation")}
+    if (!author.trim()){throw new Error ("Empty author not allowed in this operation")}
     this.#author = author;
     }
 
     get author () {
         return this.#author;
     }
+
+    set category (category) {
+        this.category = category
+    }
+  
+    get category () {
+       return this.category;
+    }
+
+    set pages (pages) {
+    this.pages = pages
+    }
+
+    get pages () {
+       return this.pages;
+    }
+
+    set publisher (publisher) {
+    this.#publisher = publisher
+    }
+  
+    get publisher () {
+       return this.publisher;
+    }
+
+    set doneReading (boolean) {
+        this.doneReading = boolean;
+    }
+
+    get doneReading () {
+    return this.#doneReading;
+    }
+
 }

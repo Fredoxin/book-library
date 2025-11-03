@@ -5,7 +5,7 @@ export class Library {
    
     
     async handleBookSubmit (event) {
-        try{
+        try {
             const form = event.target; // Das Formular-Element
             const formData = new FormData(form); // FormData-Objekt erstellen
             // macht ein JS Objekt aus formDatas
@@ -26,6 +26,10 @@ export class Library {
     addBook (book) {
         this.#books.push(book);
         console.log(this.#books)
+    }
+
+    deleteBook () {
+        
     }
 
     deleteBook (name) {
