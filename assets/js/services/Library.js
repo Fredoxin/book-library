@@ -3,7 +3,8 @@ import { Book } from "../models/Book.js";
 export class Library {
     #books = [];
    
-    
+    // Muss technisch noch nicht async sein, könnte sich später ändern.
+    // Offene Faustregel: Wenn eine Funktion jemals async sein könnte → jetzt schon async setzen.
     async handleBookSubmit (event) {
         try {
             const form = event.target; // Das Formular-Element
@@ -24,16 +25,19 @@ export class Library {
 
 
     addBook (book) {
+        for (let i = 0; i < this.#books.length; i++){
+            if (book.title.toLowerCase() === this.#books[i].title.toLowerCase()){
+                throw new Error ("Book already in library")
+            }   
+        }
         this.#books.push(book);
         console.log(this.#books)
     }
 
-    deleteBook () {
-        
-    }
+    deleteBook (title = undefined) {
+        if (!title) {throw new Error ("Enter a valid title")}
+        this.#books = this.#books.filter(book => book.title.toLowerCase() != title.toLowerCase())
 
-    deleteBook (name) {
-        // TODO find book by name and delete.
     }
 
     get books () {

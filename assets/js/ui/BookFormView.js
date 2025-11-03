@@ -20,19 +20,21 @@ export class BookFormView {
             insertTemplateToDOM(templateHTML);
 
             const addBookForm = document.querySelector(".addBookForm");
-            addBookForm.addEventListener("submit", async (event) => { // wie warum genau async arrow
+            if (!addBookForm) {throw new Error ("Book form not found")}
+
+            addBookForm.addEventListener("submit", async (event) => {
             event.preventDefault();
-            const newBook = await this.library.handleBookSubmit(event);
-                
             
-            // await weil initLIbrar asaync ist?
+            try {
+            const newBook = await this.library.handleBookSubmit(event);
             await this.libraryView.initLibraryView();
             this.libraryView.renderBooks();
-            //TODO UI FEEDBACK
-            console.log("Added book:", newBook.title, "id:", newBook.id);
-            })
-
-
+            }         
+            catch (error) {
+                const errorMessageElement = document.querySelector(".errorMessage");
+                if (errorMessageElement) errorMessageElement.textContent = `${error.message}`;
+                console.error(error.message);              
+            }})
         } catch (error) {
                 console.error(error.stack);
                 console.error("initLibraryView error:", error);
@@ -41,8 +43,7 @@ export class BookFormView {
                     errorMessageElement.textContent = `${error.message}`;
                 else {
                     console.error(error.message);
-                }
-                throw error;        
+                }    
         }
     }
 }

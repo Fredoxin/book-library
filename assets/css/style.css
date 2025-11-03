@@ -92,6 +92,7 @@ header nav {
 	gap: 0.5rem;
 	min-height: 10rem;
     min-width: 5rem;
+    max-width: 10rem;
     border: 1px;
 }
 .book img {

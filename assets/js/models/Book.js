@@ -12,7 +12,7 @@ export class Book {
     constructor (title, cover = undefined,  author = undefined, category = undefined, pages = undefined, publisher = undefined, doneReading = false) {
         console.log("Book constructor called with:", { title, cover, author, category, pages, publisher, doneReading });
         if (doneReading != false) {doneReading = true;}
-        this.#id = ++Book.idCounter;
+        this.#id = crypto.randomUUID();
         this.#title = title;
         this.#cover = cover; // src path
         this.#category = category;
