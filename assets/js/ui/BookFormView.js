@@ -14,8 +14,9 @@ export class BookFormView {
             // Fetch template and inser to DOM
             const response = await fetch(this.path);
             if (!response.ok) {
-                throw new Error("Template not found: " + this.path);
+                throw new Error("Template not found at: " + this.path);
             }
+            
             const templateHTML = await response.text();
             insertTemplateToDOM(templateHTML);
 
@@ -23,6 +24,7 @@ export class BookFormView {
             if (!addBookForm) {throw new Error ("Book form not found")}
 
             addBookForm.addEventListener("submit", async (event) => {
+            console.count("submit") 
             event.preventDefault();
             
             try {
