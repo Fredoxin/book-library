@@ -13,7 +13,7 @@ export function insertTemplateToDOM (html) {
     templateTag.innerHTML = html;
 
     // Zielcontainer bereinigen und Template-Inhalt einfügen
-    app.innerHTML = ""; // Vorherigen Inhalt löschen
+    app.innerHTML = ""; 
     app.append(templateTag.content.cloneNode(true));
     }
 

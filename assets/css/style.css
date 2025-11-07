@@ -43,6 +43,19 @@ header nav {
 	margin: 0 auto;
 }
 
+.bookFormContainer header {
+	display: flex;
+	background-color: white;
+
+	.backToLibraryButton {
+		all: unset;
+  		cursor: pointer;
+  		display: inline-block;
+		margin-left: 2rem;
+		color: var(--accent)
+	}
+}
+
 /* Buttons */
 .button {
 	appearance: none;

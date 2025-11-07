@@ -1,3 +1,4 @@
+import { Library } from "../services/Library.js";
 import { insertTemplateToDOM } from "../util/ui-uitil.js";
 
 export class BookFormView {
@@ -22,6 +23,15 @@ export class BookFormView {
 
             const addBookForm = document.querySelector(".addBookForm");
             if (!addBookForm) {throw new Error ("Book form not found")}
+
+            const backToLibraryButton = document.querySelector(".backToLibraryButton");
+            if (!backToLibraryButton) {throw new Error ("backToLibraryButton not found")} 
+
+            backToLibraryButton.addEventListener("click", async () => {
+                await this.libraryView.initLibraryView();
+                this.libraryView.renderBooks()
+            })
+        
 
             addBookForm.addEventListener("submit", async (event) => {
             console.count("submit") 

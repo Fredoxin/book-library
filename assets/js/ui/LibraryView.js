@@ -1,4 +1,5 @@
 import { insertTemplateToDOM } from "../util/ui-uitil.js";
+import { createBookElement } from "./components/createBookElement.js";
 
 export class LibraryView {
 
@@ -21,24 +22,7 @@ export class LibraryView {
                 }       
             
             bookListElement.innerHTML = "";
-            books.forEach(book => {
-            const bookElement = document.createElement("div");
-            bookElement.className = "book";
-            const cover = document.createElement("img");
-            
-            //Set src only if there is a cover to not display broken image symbol
-            if (book.cover) {
-                cover.src = book.cover;
-            } else {
-                cover.removeAttribute("src");
-            }
-
-            cover.alt = book.author === "" ? book.title : `${book.title} by ${book.author}`;
-                
-            //insert cover into bookElement and book into bookListElement
-            bookElement.append(cover);
-            bookListElement.append(bookElement);
-            })
+            books.forEach(book => bookListElement.append(createBookElement(book)))
 
             } catch (error) {
                 console.error(error.stack);

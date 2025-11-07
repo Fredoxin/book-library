@@ -12,8 +12,8 @@ const deleteButton = document.querySelector(".button--delete");
 
 //Event Listener
 // TODO: Show Add Book Form
-addButton.addEventListener("click", () => bookFormView.initBookFormView());
-
+addButton.addEventListener("click", () => new BookFormView("addBookForm.html", library, libraryView).initBookFormView());
+deleteButton.addEventListener("click", () => new BookFormView("deleteBookForm.html", library, libraryView).initBookFormView());
 // Show delete or delete checked Books
 //deleteButton.addEventListener("click", handleDelete);
     
