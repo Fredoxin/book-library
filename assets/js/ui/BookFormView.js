@@ -3,26 +3,27 @@ import { insertTemplateToDOM } from "../util/ui-uitil.js";
 
 export class BookFormView {
 
-    constructor (templateName, library, libraryView) {
+    constructor (library, libraryView) {
         this.library =  library;
         this.libraryView =  libraryView
-        this.templateName = templateName;
-        this.path = `./assets/templates/${templateName}`;
+       // this.templateName = templateName;
+        
     }
 
-    async initBookFormView () {
+    async initBookFormView (bookFormTemplate) {
+        const path = `./assets/templates/${bookFormTemplate}.html`;
         try {
             // Fetch template and inser to DOM
-            const response = await fetch(this.path);
+            const response = await fetch(path);
             if (!response.ok) {
-                throw new Error("Template not found at: " + this.path);
+                throw new Error("Template not found at: " + path);
             }
             
             const templateHTML = await response.text();
             insertTemplateToDOM(templateHTML);
 
-            const addBookForm = document.querySelector(".addBookForm");
-            if (!addBookForm) {throw new Error ("Book form not found")}
+            const bookForm = document.querySelector(`.${bookFormTemplate}`);
+            if (!bookForm) {throw new Error ("Book form template not found")}
 
             const backToLibraryButton = document.querySelector(".backToLibraryButton");
             if (!backToLibraryButton) {throw new Error ("backToLibraryButton not found")} 
@@ -33,7 +34,7 @@ export class BookFormView {
             })
         
 
-            addBookForm.addEventListener("submit", async (event) => {
+            bookForm.addEventListener("submit", async (event) => {
             console.count("submit") 
             event.preventDefault();
             
@@ -43,13 +44,14 @@ export class BookFormView {
             this.libraryView.renderBooks();
             }         
             catch (error) {
+                console.error(error.stack);
                 const errorMessageElement = document.querySelector(".errorMessage");
                 if (errorMessageElement) errorMessageElement.textContent = `${error.message}`;
                 console.error(error.message);              
             }})
         } catch (error) {
                 console.error(error.stack);
-                console.error("initLibraryView error:", error);
+                console.error("init book form view error:", error);
                 const errorMessageElement = document.querySelector(".errorMessage");
                 if (errorMessageElement)
                     errorMessageElement.textContent = `${error.message}`;
