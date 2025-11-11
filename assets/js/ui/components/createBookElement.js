@@ -4,7 +4,7 @@ export function createBookElement (book) {
     const bookElement = document.createElement("div");
     bookElement.className = "book";
     const cover = document.createElement("img");
-    
+    //TODO the cover needs to be implemented differently
     //Set src only if there is a cover to not display broken image symbol
     if (book.cover) {
         cover.src = book.cover;

@@ -1,4 +1,4 @@
-import { Library } from "./services/Library.js";
+import { Library } from "./models/Library.js";
 import { LibraryView } from "./ui/LibraryView.js";
 import { BookFormView } from "./ui/BookFormView.js";
 

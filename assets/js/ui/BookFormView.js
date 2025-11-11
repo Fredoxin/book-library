@@ -1,4 +1,3 @@
-import { Library } from "../services/Library.js";
 import { insertTemplateToDOM } from "../util/ui-uitil.js";
 
 export class BookFormView {
@@ -11,6 +10,7 @@ export class BookFormView {
     }
 
     async initBookFormView (bookFormTemplate) {
+        // Set the path to the template dynamically
         const path = `./assets/templates/${bookFormTemplate}.html`;
         try {
             // Fetch template and inser to DOM
@@ -37,11 +37,17 @@ export class BookFormView {
             bookForm.addEventListener("submit", async (event) => {
             console.count("submit") 
             event.preventDefault();
+            // Extract form-data and make js object
+            const form = event.target; // Das Formular-Element
+            const formData = new FormData(form); // FormData-Objekt erstellen
+            const bookData = Object.fromEntries(formData.entries()); // macht ein JS Objekt aus formDatas
+
             
             try {
-            const newBook = await this.library.handleBookSubmit(event);
-            await this.libraryView.initLibraryView();
-            this.libraryView.renderBooks();
+
+                const newBook = await this.library.addBookFormData(bookData);
+                await this.libraryView.initLibraryView();
+                this.libraryView.renderBooks();
             }         
             catch (error) {
                 console.error(error.stack);
