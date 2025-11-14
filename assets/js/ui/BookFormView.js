@@ -1,9 +1,7 @@
-import { insertTemplateToDOM } from "../util/ui-uitil.js";
-
 export class BookFormView {
 
-    constructor (library, libraryView) {
-        this.library =  library;
+    constructor (libraryView, libraryController) {
+        this.libraryController = libraryController;    
         this.libraryView =  libraryView
        // this.templateName = templateName;
         
@@ -12,6 +10,7 @@ export class BookFormView {
     async initBookFormView (bookFormTemplate) {
         // Set the path to the template dynamically
         const path = `./assets/templates/${bookFormTemplate}.html`;
+        
         try {
             // Fetch template and inser to DOM
             const response = await fetch(path);
@@ -20,7 +19,7 @@ export class BookFormView {
             }
             
             const templateHTML = await response.text();
-            insertTemplateToDOM(templateHTML);
+            this.libraryView.insertTemplateToDOM(templateHTML);
 
             const bookForm = document.querySelector(`.${bookFormTemplate}`);
             if (!bookForm) {throw new Error ("Book form template not found")}
@@ -44,10 +43,8 @@ export class BookFormView {
 
             
             try {
-
-                const newBook = await this.library.addBookFormData(bookData);
                 await this.libraryView.initLibraryView();
-                this.libraryView.renderBooks();
+                const newBook = await this.libraryController.addBookFormData(bookData);                
             }         
             catch (error) {
                 console.error(error.stack);

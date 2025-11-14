@@ -1,28 +1,25 @@
-import { insertTemplateToDOM } from "../util/ui-uitil.js";
-import { createBookElement } from "./components/createBookElement.js";
-
 export class LibraryView {
 
-    constructor (library) { 
-        if (!library) {throw new Error ("Library required");}
-        this.library = library;     
+    constructor (libraryController) { 
+        if (!libraryController) {throw new Error ("LibraryController required");}
+        this.libraryController = libraryController;     
     }
 
     renderBooks () {
         try {
-             // get books
-            const books = this.library.books;
+                // get books
+            const books = this.libraryController.getLibraryContent();
             const bookListElement = document.querySelector(".book-list");
             // check if there is a booklistElement  
             if (!bookListElement) { throw new Error ("No bookListElement found in DOM");}
-             // check if library is empty
+                // check if library is empty
             if (books.length === 0) {
                 bookListElement.textContent = "Keine Bücher vorhanden.";
                 return;
                 }       
             
             bookListElement.innerHTML = "";
-            books.forEach(book => bookListElement.append(createBookElement(book)))
+            books.forEach(book => bookListElement.append(this.createBookElement(book)))
 
             } catch (error) {
                 console.error(error.stack);
@@ -31,18 +28,19 @@ export class LibraryView {
                     errorMessageElement.textContent = `${error.message}`;
                 else {
                     console.error(error.message);
-                }        
+            }        
         }
     }
-
+  //
   async initLibraryView () {
         const path = "./assets/templates/libraryView.html";
+        this.libraryController.setView(this);
         
      try {   
         const response = await fetch(path);
         if (!response.ok) {throw new Error ("Template not found");}
         const libraryViewHtml = await response.text();
-        insertTemplateToDOM(libraryViewHtml);
+        this.insertTemplateToDOM(libraryViewHtml);
         } catch (error) {
             console.error(error.stack);
             const errorMessageElement = document.querySelector(".errorMessage");
@@ -53,5 +51,43 @@ export class LibraryView {
             }
         throw error;       
         }
+    }
+
+    insertTemplateToDOM (html) {
+        if (!html) {
+            throw new Error("No template found");
+        }
+        const app = document.querySelector(".app");
+        if (!app) {
+            throw new Error("Target container not found");
+        }
+
+        // Neues Template-Tag erstellen
+        const templateTag = document.createElement("template");
+        templateTag.innerHTML = html;
+
+        // Zielcontainer bereinigen und Template-Inhalt einfügen
+        app.innerHTML = ""; 
+        app.append(templateTag.content.cloneNode(true));
+    }
+
+    createBookElement (book) {
+        if (!book) {throw new Error ("book is missing");}
+                
+        const bookElement = document.createElement("div");
+        bookElement.className = "book";
+        const cover = document.createElement("img");
+        //TODO the cover needs to be implemented differently
+        //Set src only if there is a cover to not display broken image symbol
+        if (book.cover) {
+            cover.src = book.cover;
+        } else {
+            cover.removeAttribute("src");
+        }
+        cover.alt = !book.author ? book.title : `${book.title} by ${book.author}`;    
+        //insert cover into bookElement
+        bookElement.append(cover);
+
+        return bookElement;
     }
 }
