@@ -1,10 +1,10 @@
-export class BookFormView {
+import { insertTemplateToDOM } from "./util/ui-util.js";
 
-    constructor (libraryView, libraryController) {
-        this.libraryController = libraryController;    
-        this.libraryView =  libraryView
-       // this.templateName = templateName;
-        
+export class BookFormView {
+    // dependency injection for the controller and a callback which navigates back to libraryView.
+    constructor (libraryController, viewCallback) {
+        this.libraryController = libraryController;
+        this.viewCallback = viewCallback;           
     }
 
     async initBookFormView (bookFormTemplate) {
@@ -19,7 +19,7 @@ export class BookFormView {
             }
             
             const templateHTML = await response.text();
-            this.libraryView.insertTemplateToDOM(templateHTML);
+            insertTemplateToDOM(templateHTML);
 
             const bookForm = document.querySelector(`.${bookFormTemplate}`);
             if (!bookForm) {throw new Error ("Book form template not found")}
@@ -28,13 +28,15 @@ export class BookFormView {
             if (!backToLibraryButton) {throw new Error ("backToLibraryButton not found")} 
 
             backToLibraryButton.addEventListener("click", async () => {
-                await this.libraryView.initLibraryView();
-                this.libraryView.renderBooks()
+                try {
+                    await this.viewCallback();
+                } catch (error) { // Ich denke das muss weiter geworfen werden je nachdem wo du den fehler behandeln willst. Wobei der View zum behandl gut sein könnte.
+                    console.error(error)
+                }
             })
         
-
+            // handles for submit event on submit, not button click
             bookForm.addEventListener("submit", async (event) => {
-            console.count("submit") 
             event.preventDefault();
             // Extract form-data and make js object
             const form = event.target; // Das Formular-Element
@@ -43,8 +45,8 @@ export class BookFormView {
 
             
             try {
-                await this.libraryView.initLibraryView();
-                const newBook = await this.libraryController.addBookFormData(bookData);                
+                const newBook = await this.libraryController.addBookFormData(bookData); // I dont need the const yet. Its better for testing und future functionality
+                await this.viewCallback();                              
             }         
             catch (error) {
                 console.error(error.stack);

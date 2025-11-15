@@ -6,13 +6,14 @@ import { LibraryController } from "./controller/LibraryController.js";
 const library = new Library();
 const libraryController = new LibraryController(library)
 const libraryView = new LibraryView(libraryController);
-const bookFormView = new BookFormView(libraryView, libraryController);
+const bookFormView = new BookFormView(libraryController, showLibraryView);
  
 
 window.addEventListener("DOMContentLoaded", () => {
     init();
-    libraryView.renderBooks();
+    libraryView.initLibraryView();
 }); 
+
 //Initilizes navbar buttons
 function init () {
     const addButton = document.querySelector(".button--add");
@@ -20,3 +21,13 @@ function init () {
     addButton.addEventListener("click", () => bookFormView.initBookFormView("addBookForm"));
     deleteButton.addEventListener("click", () => bookFormView.initBookFormView("deleteBookForm"));
     }
+// inversion of control => logik injezierung als callblack - main behandelt view wechsel.
+export function showLibraryView () {
+    try {
+        libraryView.initLibraryView();
+    } catch (error) {
+        console.error(error)
+    } 
+}
+
+
